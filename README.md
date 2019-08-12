@@ -1,3 +1,3 @@
 # shaka-player-demos
 
-https://curtisconway.github.io/shaka-player-demos/index.html
+https://curtisconway.github.io/shaka-player-demos/
