@@ -6,6 +6,7 @@ if(!window.muxjs){
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+
     const playerElement = document.getElementById('playerElement');
     const errorElement = document.getElementById('errorElement');
     const playerElement2 = document.getElementById('playerElement2');
@@ -29,7 +30,7 @@ class ShakaPlayer {
         shaka.polyfill.installAll();
 
         if (shaka.Player.isBrowserSupported()) {
-
+            this.loadSource();
         }
     }
 
