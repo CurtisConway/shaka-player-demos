@@ -24,47 +24,51 @@ class ShakaPlayer {
         this.hlsManifestUrl = this.playerElement.dataset['hlsManifest'];
         this.errorElement = errorElement;
         this.startTime = startTime;
-        let shakaPlayer;
+        this.shakaPlayer = null;
 
         shaka.polyfill.installAll();
 
         if (shaka.Player.isBrowserSupported()) {
-            shakaPlayer = new shaka.Player();
 
-            shakaPlayer.addEventListener('error', (error) => {
+        }
+    }
+
+    loadSource(){
+        this.shakaPlayer = new shaka.Player();
+
+        this.shakaPlayer.addEventListener('error', (error) => {
+            console.error(error);
+            this.appendErrors(error.detail.data);
+        });
+
+        this.shakaPlayer.attach(this.playerElement)
+            .then(() => {
+                this.shakaPlayer.configure({
+                    abr: {
+                        restrictions: {
+                            maxHeight: window.screen.height,
+                        },
+                    },
+                    streaming: {
+                        bufferingGoal: 150,
+                        ignoreTextStreamFailures: true,
+                    },
+                });
+
+                this.shakaPlayer.load(
+                    this.hlsManifestUrl,
+                    this.startTime,
+                    'application/x-mpegURL',
+                )
+                    .catch((error) => {
+                        console.error(error);
+                        this.appendErrors(error.detail.data);
+                    });
+            })
+            .catch((error) => {
                 console.error(error);
                 this.appendErrors(error.detail.data);
             });
-
-            shakaPlayer.attach(playerElement)
-                .then(() => {
-                    shakaPlayer.configure({
-                        abr: {
-                            restrictions: {
-                                maxHeight: window.screen.height,
-                            },
-                        },
-                        streaming: {
-                            bufferingGoal: 150,
-                            ignoreTextStreamFailures: true,
-                        },
-                    });
-
-                    shakaPlayer.load(
-                        this.hlsManifestUrl,
-                        this.startTime,
-                        'application/x-mpegURL',
-                    )
-                        .catch((error) => {
-                            console.error(error);
-                            this.appendErrors(error.detail.data);
-                        });
-                })
-                .catch((error) => {
-                    console.error(error);
-                    this.appendErrors(error.detail.data);
-                });
-        }
     }
 
     appendErrors(errors){
