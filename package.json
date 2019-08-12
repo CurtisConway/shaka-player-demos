@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "rm -rf docs/*.png;rm -rf docs/*.js;rm -rf docs/*.css;rm -rf docs/*.html;rm -rf docs/*.map",
     "watch": "parcel index.html --out-dir docs --log-level 4 --no-cache",
-    "build": "npm run prebuild; parcel build index.html --out-dir docs --log-level 4 --no-cache"
+    "build": "npm run prebuild; parcel build index.html --out-dir docs --log-level 4 --no-cache --public-url ./"
   },
   "repository": {
     "type": "git",
